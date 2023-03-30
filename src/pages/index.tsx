@@ -72,26 +72,26 @@ const Home = (props: Props): JSX.Element => {
   const changeMfrCerealParameter = (
     e: ChangeEvent<HTMLSelectElement>
   ): void => {
-    setMfrCerealParameter(e.target.value as CerealTypeParameterName | '')
+    setMfrCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
   }
 
   const changeTypeCerealParameter = (
     e: ChangeEvent<HTMLSelectElement>
   ): void => {
-    setTypeCerealParameter(e.target.value as CerealTypeParameterName | '')
+    setTypeCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
   }
 
   return (
     <>
       <Head>
-        <title>chart-js-app</title>
+        <title>chart-ts-app</title>
         <meta name="description" content="Chart.jsで散布図を表示するアプリ" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <section style={{ padding: '10pt' }}>
-          <h1>chart-js-app</h1>
+          <h1>chart-ts-app</h1>
           <p>シリアルのデータ</p>
           <div style={{ width: '400pt' }}>
             <Scatter
