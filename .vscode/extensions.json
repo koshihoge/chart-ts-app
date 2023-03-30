@@ -7,7 +7,8 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-vscode-remote.remote-containers",
-    "prisma.prisma"
+    "prisma.prisma",
+    "mhutchie.git-graph"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
