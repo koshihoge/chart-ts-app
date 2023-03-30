@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  node_modules:
+  postgres:
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/workspace:cached
+      - node_modules:/workspace/node_modules
+    working_dir: /workspace
+    tty: true
+    depends_on:
+      - db
+  db:
+    build: ./db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./db:/workspace/db
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
