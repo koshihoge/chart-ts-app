@@ -1,21 +1,17 @@
-import {
-  selectCerealValueOptions,
-  refineCerealValueOptions,
-} from './components/chartSelectBox'
-
-import {
-  CerealTypeParameterName,
-  CerealValueParameterName,
-} from '@/parameters/cerealParamters'
+import { AxisSelectBox } from '@/pages/components/axisSelectBox'
+import { ClassificationSelectBox } from '@/pages/components/classificationSelectBox'
 import { getChartOptions } from '@/parameters/chartParameters'
+import { useAxis } from '@/state/axis'
+import { useClassification } from '@/state/classification'
 
 import { Inter } from '@next/font/google'
 import { cereals } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Scatter } from 'react-chartjs-2'
+import { useStore } from 'zustand'
 
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
 
 import 'chart.js/auto'
 
@@ -27,17 +23,8 @@ type Props = {
 }
 
 const Home = (props: Props): JSX.Element => {
-  const [xCerealParameter, setXCerealParameter] =
-    useState<CerealValueParameterName>('calories')
-  const [yCerealParameter, setYCerealParameter] =
-    useState<CerealValueParameterName>('carbo')
-
-  const [mfrCerealParameter, setMfrCerealParameter] = useState<
-    CerealTypeParameterName | '未選択'
-  >('未選択')
-  const [typeCerealParameter, setTypeCerealParameter] = useState<
-    CerealTypeParameterName | '未選択'
-  >('未選択')
+  const axis = useStore(useAxis)
+  const classification = useStore(useClassification)
 
   const mfrs = new Set(props.cereals.map((element, _) => element.mfr))
   const types = new Set(props.cereals.map((element, _) => element.type))
@@ -45,14 +32,14 @@ const Home = (props: Props): JSX.Element => {
   const cereals = props.cereals
     .filter((cereal: cereals) => {
       return (
-        (mfrCerealParameter === '未選択' ||
-          mfrCerealParameter === cereal.mfr) &&
-        (typeCerealParameter === '未選択' ||
-          typeCerealParameter === cereal.type)
+        (classification.mfr === '未選択' ||
+          classification.mfr === cereal.mfr) &&
+        (classification.type === '未選択' ||
+          classification.type === cereal.type)
       )
     })
     .map((cereal: cereals) => {
-      return { x: cereal[xCerealParameter], y: cereal[yCerealParameter] }
+      return { x: cereal[axis.x], y: cereal[axis.y] }
     })
 
   const data = {
@@ -63,26 +50,6 @@ const Home = (props: Props): JSX.Element => {
         data: cereals,
       },
     ],
-  }
-
-  const changeXCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setXCerealParameter(e.target.value as CerealValueParameterName)
-  }
-
-  const changeYCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setYCerealParameter(e.target.value as CerealValueParameterName)
-  }
-
-  const changeMfrCerealParameter = (
-    e: ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setMfrCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
-  }
-
-  const changeTypeCerealParameter = (
-    e: ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setTypeCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
   }
 
   return (
@@ -100,37 +67,13 @@ const Home = (props: Props): JSX.Element => {
           <div style={{ width: '400pt' }}>
             <Scatter
               data={data}
-              options={getChartOptions(xCerealParameter, yCerealParameter)}
+              options={getChartOptions(axis.x, axis.y)}
               width={300}
               height={300}
             />
           </div>
-          <div>
-            <span className="selectboxCaption">x軸</span>
-            <select value={xCerealParameter} onChange={changeXCerealParameter}>
-              {selectCerealValueOptions}
-            </select>
-            <span className="captionSpacing"></span>
-            <span className="selectboxCaption">y軸</span>
-            <select value={yCerealParameter} onChange={changeYCerealParameter}>
-              {selectCerealValueOptions}
-            </select>
-          </div>
-          <div>
-            <span className="selectboxCaption">mfr</span>
-            <select
-              value={mfrCerealParameter}
-              onChange={changeMfrCerealParameter}>
-              {refineCerealValueOptions(mfrs)}
-            </select>
-            <span className="captionSpacing"></span>
-            <span className="selectboxCaption">type</span>
-            <select
-              value={typeCerealParameter}
-              onChange={changeTypeCerealParameter}>
-              {refineCerealValueOptions(types)}
-            </select>
-          </div>
+          <AxisSelectBox />
+          <ClassificationSelectBox mfrs={mfrs} types={types} />
         </section>
       </main>
     </>

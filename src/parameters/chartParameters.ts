@@ -1,4 +1,4 @@
-import { CerealValueParameterName } from '@/parameters/cerealParamters'
+import { CerealValueParameterName } from '@/parameters/cerealParameters'
 
 import { LayoutPosition } from 'chart.js'
 
