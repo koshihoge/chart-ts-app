@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import prisma from 'lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
+
 import { cereals } from '@prisma/client'
+import { NextApiRequest, NextApiResponse } from 'next'
 import nextconnect from 'next-connect'
 
 const handler = nextconnect<NextApiRequest, NextApiResponse>({

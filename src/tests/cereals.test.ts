@@ -1,6 +1,7 @@
+import handler from '../pages/api/cereals'
+
 import { cereals } from '@prisma/client'
 import { testApiHandler } from 'next-test-api-route-handler'
-import handler from '../pages/api/cereals'
 
 const orgCereal: cereals = {
   calories: 70,
