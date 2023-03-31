@@ -1,5 +1,7 @@
+import { CerealValueParameterName } from '@/parameters/cerealParamters'
+
 import { LayoutPosition } from 'chart.js'
-import { CerealValueParameterName } from '@/paramters/cerealParamters'
+
 import type { ChartOptions } from 'chart.js'
 
 export const getChartOptions = (

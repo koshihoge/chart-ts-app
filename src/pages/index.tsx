@@ -1,19 +1,23 @@
-import Head from 'next/head'
-import { Inter } from '@next/font/google'
-import React, { ChangeEvent, useState } from 'react'
-import { Scatter } from 'react-chartjs-2'
-import {
-  CerealTypeParameterName,
-  CerealValueParameterName,
-} from '@/paramters/cerealParamters'
-import { GetServerSideProps } from 'next'
-import 'chart.js/auto'
-import { getChartOptions } from '../paramters/chartParameters'
 import {
   selectCerealValueOptions,
   refineCerealValueOptions,
 } from './components/chartSelectBox'
+
+import {
+  CerealTypeParameterName,
+  CerealValueParameterName,
+} from '@/parameters/cerealParamters'
+import { getChartOptions } from '@/parameters/chartParameters'
+
+import { Inter } from '@next/font/google'
 import { cereals } from '@prisma/client'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import { Scatter } from 'react-chartjs-2'
+
+import React, { ChangeEvent, useState } from 'react'
+
+import 'chart.js/auto'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const inter = Inter({ subsets: ['latin'] })

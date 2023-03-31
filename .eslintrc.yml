@@ -64,3 +64,26 @@ rules:
   # prettier のチェックでErrorとするための設定。
   # prettier/prettier:
   #   - error
+  import/order:
+    - error
+    - groups:
+        - index
+        - sibling
+        - parent
+        - internal
+        - external
+        - builtin
+        - object
+        - type
+      pathGroups:
+        - pattern: '{react,react-dom/**,react-router-dom}'
+          group: builtin
+          position: before
+        - pattern: '@src/**'
+          group: parent
+          position: before
+      pathGroupsExcludedImportTypes:
+        - builtin
+      alphabetize:
+        order: asc
+      newlines-between: always

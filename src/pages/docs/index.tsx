@@ -1,7 +1,9 @@
-import type { NextPage } from 'next'
-import React from 'react'
-import Head from 'next/head'
 import { API } from '@stoplight/elements'
+import Head from 'next/head'
+
+import React from 'react'
+
+import type { NextPage } from 'next'
 import '@stoplight/elements/styles.min.css'
 
 const ApiDocuments: NextPage = () => {
