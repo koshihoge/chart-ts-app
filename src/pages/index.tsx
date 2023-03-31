@@ -1,12 +1,9 @@
 import {
-  selectCerealValueOptions,
-  refineCerealValueOptions,
-} from './components/chartSelectBox'
-
-import {
-  CerealTypeParameterName,
-  CerealValueParameterName,
-} from '@/parameters/cerealParamters'
+  ClassificationSelectBox,
+  CerealComboTypeParameterName,
+} from '@/pages/components/ClassificationSelectBox'
+import { AxisSelectBox } from '@/pages/components/axisSelectBox'
+import { CerealValueParameterName } from '@/parameters/cerealParameters'
 import { getChartOptions } from '@/parameters/chartParameters'
 
 import { Inter } from '@next/font/google'
@@ -15,7 +12,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Scatter } from 'react-chartjs-2'
 
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 
 import 'chart.js/auto'
 
@@ -32,12 +29,10 @@ const Home = (props: Props): JSX.Element => {
   const [yCerealParameter, setYCerealParameter] =
     useState<CerealValueParameterName>('carbo')
 
-  const [mfrCerealParameter, setMfrCerealParameter] = useState<
-    CerealTypeParameterName | '未選択'
-  >('未選択')
-  const [typeCerealParameter, setTypeCerealParameter] = useState<
-    CerealTypeParameterName | '未選択'
-  >('未選択')
+  const [mfrCerealParameter, setMfrCerealParameter] =
+    useState<CerealComboTypeParameterName>('未選択')
+  const [typeCerealParameter, setTypeCerealParameter] =
+    useState<CerealComboTypeParameterName>('未選択')
 
   const mfrs = new Set(props.cereals.map((element, _) => element.mfr))
   const types = new Set(props.cereals.map((element, _) => element.type))
@@ -65,26 +60,6 @@ const Home = (props: Props): JSX.Element => {
     ],
   }
 
-  const changeXCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setXCerealParameter(e.target.value as CerealValueParameterName)
-  }
-
-  const changeYCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setYCerealParameter(e.target.value as CerealValueParameterName)
-  }
-
-  const changeMfrCerealParameter = (
-    e: ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setMfrCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
-  }
-
-  const changeTypeCerealParameter = (
-    e: ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setTypeCerealParameter(e.target.value as CerealTypeParameterName | '未選択')
-  }
-
   return (
     <>
       <Head>
@@ -105,32 +80,20 @@ const Home = (props: Props): JSX.Element => {
               height={300}
             />
           </div>
-          <div>
-            <span className="selectboxCaption">x軸</span>
-            <select value={xCerealParameter} onChange={changeXCerealParameter}>
-              {selectCerealValueOptions}
-            </select>
-            <span className="captionSpacing"></span>
-            <span className="selectboxCaption">y軸</span>
-            <select value={yCerealParameter} onChange={changeYCerealParameter}>
-              {selectCerealValueOptions}
-            </select>
-          </div>
-          <div>
-            <span className="selectboxCaption">mfr</span>
-            <select
-              value={mfrCerealParameter}
-              onChange={changeMfrCerealParameter}>
-              {refineCerealValueOptions(mfrs)}
-            </select>
-            <span className="captionSpacing"></span>
-            <span className="selectboxCaption">type</span>
-            <select
-              value={typeCerealParameter}
-              onChange={changeTypeCerealParameter}>
-              {refineCerealValueOptions(types)}
-            </select>
-          </div>
+          <AxisSelectBox
+            xCerealParameter={xCerealParameter}
+            setXCerealParameter={setXCerealParameter}
+            yCerealParameter={yCerealParameter}
+            setYCerealParameter={setYCerealParameter}
+          />
+          <ClassificationSelectBox
+            mfrs={mfrs}
+            types={types}
+            mfrCerealParameter={mfrCerealParameter}
+            setMfrCerealParameter={setMfrCerealParameter}
+            typeCerealParameter={typeCerealParameter}
+            setTypeCerealParameter={setTypeCerealParameter}
+          />
         </section>
       </main>
     </>

@@ -1,4 +1,4 @@
-import { cerealValueParameterNames } from '@/parameters/cerealParamters'
+import { cerealValueParameterNames } from '@/parameters/cerealParameters'
 
 export const selectCerealValueOptions = cerealValueParameterNames.map(
   (element, i) => (
