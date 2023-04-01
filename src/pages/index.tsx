@@ -1,8 +1,8 @@
+import { AxisSelectBox } from '@/pages/components/axisSelectBox'
 import {
   ClassificationSelectBox,
   CerealComboTypeParameterName,
-} from '@/pages/components/ClassificationSelectBox'
-import { AxisSelectBox } from '@/pages/components/axisSelectBox'
+} from '@/pages/components/classificationSelectBox'
 import { CerealValueParameterName } from '@/parameters/cerealParameters'
 import { getChartOptions } from '@/parameters/chartParameters'
 
