@@ -1,18 +1,16 @@
 import { AxisSelectBox } from '@/pages/components/axisSelectBox'
-import {
-  ClassificationSelectBox,
-  CerealComboTypeParameterName,
-} from '@/pages/components/classificationSelectBox'
-import { CerealValueParameterName } from '@/parameters/cerealParameters'
+import { ClassificationSelectBox } from '@/pages/components/classificationSelectBox'
 import { getChartOptions } from '@/parameters/chartParameters'
+import { RootState } from '@/state/store'
 
 import { Inter } from '@next/font/google'
 import { cereals } from '@prisma/client'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Scatter } from 'react-chartjs-2'
+import { useSelector } from 'react-redux'
 
-import React, { useState } from 'react'
+import React from 'react'
 
 import 'chart.js/auto'
 
@@ -24,15 +22,8 @@ type Props = {
 }
 
 const Home = (props: Props): JSX.Element => {
-  const [xCerealParameter, setXCerealParameter] =
-    useState<CerealValueParameterName>('calories')
-  const [yCerealParameter, setYCerealParameter] =
-    useState<CerealValueParameterName>('carbo')
-
-  const [mfrCerealParameter, setMfrCerealParameter] =
-    useState<CerealComboTypeParameterName>('未選択')
-  const [typeCerealParameter, setTypeCerealParameter] =
-    useState<CerealComboTypeParameterName>('未選択')
+  const axis = useSelector((state: RootState) => state.axis)
+  const classification = useSelector((state: RootState) => state.classification)
 
   const mfrs = new Set(props.cereals.map((element, _) => element.mfr))
   const types = new Set(props.cereals.map((element, _) => element.type))
@@ -40,14 +31,14 @@ const Home = (props: Props): JSX.Element => {
   const cereals = props.cereals
     .filter((cereal: cereals) => {
       return (
-        (mfrCerealParameter === '未選択' ||
-          mfrCerealParameter === cereal.mfr) &&
-        (typeCerealParameter === '未選択' ||
-          typeCerealParameter === cereal.type)
+        (classification.mfr === '未選択' ||
+          classification.mfr === cereal.mfr) &&
+        (classification.type === '未選択' ||
+          classification.type === cereal.type)
       )
     })
     .map((cereal: cereals) => {
-      return { x: cereal[xCerealParameter], y: cereal[yCerealParameter] }
+      return { x: cereal[axis.x], y: cereal[axis.y] }
     })
 
   const data = {
@@ -75,25 +66,13 @@ const Home = (props: Props): JSX.Element => {
           <div style={{ width: '400pt' }}>
             <Scatter
               data={data}
-              options={getChartOptions(xCerealParameter, yCerealParameter)}
+              options={getChartOptions(axis.x, axis.y)}
               width={300}
               height={300}
             />
           </div>
-          <AxisSelectBox
-            xCerealParameter={xCerealParameter}
-            setXCerealParameter={setXCerealParameter}
-            yCerealParameter={yCerealParameter}
-            setYCerealParameter={setYCerealParameter}
-          />
-          <ClassificationSelectBox
-            mfrs={mfrs}
-            types={types}
-            mfrCerealParameter={mfrCerealParameter}
-            setMfrCerealParameter={setMfrCerealParameter}
-            typeCerealParameter={typeCerealParameter}
-            setTypeCerealParameter={setTypeCerealParameter}
-          />
+          <AxisSelectBox />
+          <ClassificationSelectBox mfrs={mfrs} types={types} />
         </section>
       </main>
     </>

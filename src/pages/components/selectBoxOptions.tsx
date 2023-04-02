@@ -11,7 +11,7 @@ export const selectCerealValueOptions = cerealValueParameterNames.map(
 export const refineCerealValueOptions = (values: Set<string>): JSX.Element => {
   return (
     <>
-      <option value={'未選択'}></option>
+      <option value={'未選択'}>未選択</option>
       {Array.from(values).map((element, i) => (
         <option key={i} value={element}>
           {element}
